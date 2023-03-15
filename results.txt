@@ -1,0 +1,5 @@
+Accuracy of the model: 0.66 (66%)
+
+Confusion Matrix:
+[[4  1]
+ [31 57]]
