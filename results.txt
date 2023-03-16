@@ -1,5 +1,20 @@
-Accuracy of the model: 0.66 (66%)
+RSITradingStrategyImplementation.py
 
-Confusion Matrix:
-[[4  1]
- [31 57]]
+    Profit of the trading strategy: 3.53%
+    Actual capital: $103.53
+    Sharpe ratio: 0.15
+
+MomentumSMATradingStrategyImplementation.py
+
+    Initial capital: $100000.00
+    Sharpe: 1.176
+    Norm. Annual Return: 15.31%
+    Max Drawdown: 22.95%
+    Final Capital: $400814.02
+
+SVMIndicatorsTradingStrategyImplementation.py
+
+    Accuracy of the model: 0.66 (66%)
+    Confusion Matrix:
+    [[4  1]
+     [31 57]]
