@@ -12,34 +12,34 @@
 
 ### **Technical Explanation:**
 
-1. RSI Trdaing Strategy -- [RSITradingStrategyImplementation.py](https://github.com/harshp30/SVMIndicatorsTradingStrategyImplementation/blob/main/src/RSITradingStrategyImplementation.py)
+1. RSI Trading Strategy -- [RSITradingStrategyImplementation.py](https://github.com/harshp30/SVMIndicatorsTradingStrategyImplementation/blob/main/src/RSITradingStrategyImplementation.py)
 
     *What is Relative Strength Indicator (RSI)?*
 
-    > The Relative Strength Indicator helps identify bullish and beraish price momentum by measuring overbought an oversold conditions in the price of an asset
+    > The Relative Strength Indicator helps identify bullish and bearish price momentum by measuring overbought and oversold conditions in the price of an asset
 
-    In this case we are using RSI to create a trading strategy alongside a short and long moving average crossover strategy
+    In this case, we are using RSI to create a trading strategy alongside a short and long-moving average crossover strategy
 
     *Setup*
 
-    Overview the short and long moving average crossover summary
+    Overview of the short and long moving average crossover summary
     - short_ma > long_ma --> Buy
     - short_ma < long_ma --> Sell
 
-    I focused on IBM stock where we get the stokc price from 2015-2020'. In order to run this strategy there there are various variables. 
+    I focused on IBM stock where we get the stock price from 2015-2020'. To run this strategy there are various variables. 
 
     - The inital capital ($100)
     - stock ('IBM')
-    - short_period (40 days -- The span of days over which the short moving average will be calculated)
-    - long_period (150 days -- The span of days over which the long moving average will be calculated)
+    - short_period (40 days -- days over which the short moving average will be calculated)
+    - long_period (150 days -- days over which the long moving average will be calculated)
 
-    After these initlaization we constrict the finals and this is where we calculate the RSI (Always a number between 0-100)
+    After this initialization, we constrict the finals and this is where we calculate the RSI (Always a number between 0-100)
 
-    The formual reads:
+    The formula reads:
 
     `RSI = 100 - [(100) / (1 + (Averge Gain / Average Loss))]`
 
-    In code this becomes: 
+    In code, this becomes: 
 
     ```
     relative_strength = self.data['average_gain'] / self.data['average_loss']
@@ -48,7 +48,7 @@
 
     As a general rule of thumb:
     - An asset is considered to be oversold if RSI < 30
-    - An asset is considered to be overtbought if RSI > 30
+    - An asset is considered to be overbought if RSI > 30
 
     So in our strategy when we check if we should buy we also make sure the RSI < 30
     
@@ -64,11 +64,11 @@
 
     *Plot*
 
-    In the first plot below we see the IBM Stock price (grey), we see the short moving average (blue), and we see the long moving average (green). So with the RSI Crossover Strategy we buy or sell based on the short moving average and long moving average points crossing over
+    In the first plot below we see the IBM Stock price (grey), we see the short moving average (blue), and we see the long moving average (green). So with the RSI Crossover Strategy, we buy or sell based on the short-moving average and long-moving average points crossing over
 
     ![Model Predictions Confusion Matrix](plots/RSITradingStrategyPlot.png)
 
-    In this second plot the green line represents our equity with inital capital being $100
+    In this second plot, the green line represents our equity with initial capital being $100
 
     ![Model Predictions Confusion Matrix](plots/RSITradingStrategyEquityCurvePlot.png)
 
@@ -76,21 +76,21 @@
 
 2. MomentumSMATradingStrategyImplementation -- [MomentumSMATradingStrategyImplementation.py](https://github.com/harshp30/SVMIndicatorsTradingStrategyImplementation/blob/main/src/MomentumSMATradingStrategyImplementation.py)
 
-    *What is Simple Moving average (SMA)?*
+    *What is the Simple Moving average (SMA)?*
 
     > Simple Moving Average is the arithmetic mean of a given asset's price over a specific number of days in the past. This is a very basic indicator used to filter out noise from stock price data
 
     *What is Momentum Based Trading?*
 
-    > This startegy revolves around finding stocks with high momentum, which means the stock price is expected to increase. Based on the momentum a long position is opened or closed where the size of the position is calculated using Average True Range (ATR) indicator
+    > This strategy revolves around finding stocks with high momentum, which means the stock price is expected to increase. Based on the momentum a long position is opened or closed where the size of the position is calculated using the Average True Range (ATR) indicator
 
-    In this case we a combined SMA and Momentum based Trading Strategy to find high momentum stocks over a long period of time
+    In this case we a combined SMA and Momentum based Trading Strategy to find high-momentum stocks over a long period of time
 
     *Setup*
 
-    This implementation uses the Backtrader library which helps in strategy development and testing for algorithmic traders. This essentially saves us time by not having to implement every single strategy or indicator from scratch (example SMA)
+    This implementation uses the Backtrader library which helps in strategy development and testing for algorithmic traders. This essentially saves us time by not having to implement every single strategy or indicator from scratch (for example SMA)
 
-    The backtrader framework strates with the initilization of cerebro (which acts as a central point) and then we mount the strategy, analyszers, and data to then run the trading strategy
+    The backtrader framework states with the initialization of cerebro (which acts as a central point) and then we mount the strategy, analyzers, and data to then run the trading strategy
 
     ```
     # Example
@@ -99,7 +99,7 @@
     cerebro.adddata(bt.feeds.PandasData(dataname=df))
     ```
 
-    To measure the momentum on a stock we also need ot calculate Average True Range (ATR) Indictaor
+    To measure the momentum of a stock we also need to calculate Average True Range (ATR) Indicator
 
     > ATR is used to measure market volatility by measuring the entire range of an asset price for a given period
 
@@ -111,7 +111,7 @@
 
     `size = (cpaital * risk factor) / (ATR[X amount of time])`
 
-    So the strategy itself revolves around organizing the possible stocks by there calculated momentum, we only open/hold long posiitons on stocks in the top 20%. If we chose to open a position we check that the stock is in the top 20$ of momentum and use ATR to calculate the size of the position. We can also open them when SMA is below the S&P500 index. We close these positions if the stock falls out of the top 20% momentumm or the stock price falls below the 100 day Moving Average. 
+    So the strategy itself revolves around organizing the possible stocks by their calculated momentum, we only open/hold long positions on stocks in the top 20%. If we chose to open a position we check that the stock is in the top 20$ of momentum and use ATR to calculate the size of the position. We can also open them when SMA is below the S&P500 index. We close these positions if the stock falls out of the top 20% momentum or the stock price falls below the 100-day Moving Average. 
 
     ```
     # Open Position
@@ -131,19 +131,19 @@
 
     The key analyzer/metric of the strategy is called the Sharpe Ratio
 
-    > The Sharpe Ratio describes how much excess return you are recieveing for any extra volatility you endure holding a riskier asset (example stock). Sharpe Ratio is the most important risk and return measure used in quanititative finance
+    > The Sharpe Ratio describes how much excess return you are receiving for any extra volatility you endure holding a riskier asset (for example stock). Sharpe Ratio is the most important risk and return measure used in quantitative finance
 
     To calculate Sharpe Ratio you would use the following formula
 
     `S(x) = (r[x] - R[f]) / (σ(x))`
 
     - r[x] = average rate of return for investment x
-    - R[f] = rate of return of a risk free security
+    - R[f] = rate of return of a risk-free security
     - σ = standard deviation
 
     A Sharpe ratio > 1.0 is considered to be good
 
-    In this case some the results (with intial capital: $100000.00) we got were:
+    In this case, some of the results (with initial capital: $100000.00) we got were:
     - Sharpe: 1.176
     - Final Capital: $400814.02
 
@@ -155,15 +155,15 @@
 
     > A support vector machine (SVM) is a supervised machine learning model that uses classification algorithms for two-group classification problems
 
-    In this case we are using SVM combined with RSI Indicators to create a complete trading strategy
+    In this case, we are using SVM combined with RSI Indicators to create a complete trading strategy
 
-    With SVMs the goal is the maximize the margin on either side of the linear `y = mx + b` function. The points that are closest to the maximum margin are called support vectors, These support vectors store the information for the decision boundary.
+    With SVMs, the goal is the maximize the margin on either side of the linear `y = mx + b` function. The points that are closest to the maximum margin are called support vectors, These support vectors store the information for the decision boundary.
     
     ![Model Predictions Confusion Matrix](plots/SVMGraph.png)
 
-    In certain situations the function for the linear line may not be very clear like it is in the plot above. This is when we owuld use the "Kernel Trick"
+    In certain situations, the function for the linear line may not be very clear as it is in the plot above. This is when we would use the "Kernel Trick"
 
-    The kernel function allows us to transform the problem into higher dimenional spaces where the points are linearly seperable. 
+    The kernel function allows us to transform the problem into higher dimensional spaces where the points are linearly separable. 
 
     `L(α)[max] = Σ[i=1]α[i] - 1/2 Σ[i=1]Σ[j=1]α[i]α[j]y[i]y[j](x[i]*x[j])`
 
@@ -173,13 +173,13 @@
 
     *Setup*
 
-    This implementation is unique due to the machine learning compoenent. However to set up the data to perform the Machine Learning Componenet we have to do the following:
+    This implementation is unique due to the machine learning component. However, to set up the data to perform the Machine Learning Component we have to do the following:
     - Fetch the data in this case EURUSD=X from 2018 to 2020
     - Construct the signals for SMA, trend, RSI, and direction
 
-    After these have all been gathered we select the feature and target columns, in this case we have trend and RSI for feature and direction for target. Essentially what this means is that the ML model will use the feature columns to make predictions on the target column
+    After these have all been gathered we select the feature and target columns, in this case, we have trend and RSI for the feature and direction for the target. Essentially what this means is that the ML model will use the feature columns to make predictions on the target column
 
-    We then create the traina nd test data with a 80-20 split. This means that 20% of the dataset is reserved for testing purposes
+    We then create the train and test data with an 80-20 split. This means that 20% of the dataset is reserved for testing purposes
 
     ```
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -201,7 +201,7 @@
         svm = SVC(C=p['C'], gamma=p['gamma'])
         svm.fit(X_train, y_train)
         predictions = svm.predict(X_test)
-        # check condition to find best params
+        # check the condition to find the best params
         if accuracy_score(y_test, predictions) > best_accuracy:
             best_accuracy = accuracy_score(y_test, predictions)
             best_parameter = p
@@ -213,7 +213,7 @@
     print('Accuracy of the model: %.2f' % accuracy_score(y_test, predictions))
     print(confusion_matrix(predictions, y_test))
 
-    # Create confusion matrix to visualize results
+    # Create a confusion matrix to visualize results
     cf_matrix = confusion_matrix(predictions, y_test)
 
     ax = plt.subplot()
@@ -222,7 +222,7 @@
 
     *Plot*
 
-    This is the Confusion Matrix for the SVM model. This has an accuracy of 66%. It predicted 61 properly predicted dircetions and 32 incorrect direction predictions.
+    This is the Confusion Matrix for the SVM model. This has an accuracy of 66%. It predicted 61 properly predicted directions and 32 incorrect direction predictions.
 
     ![Model Predictions Confusion Matrix](plots/ConfusionMatrix.png)
 
@@ -230,12 +230,13 @@
 
 ### Next Steps:
 
-- The ML model can be trained on an expanded search space for the parameter, something like raytune could be used to use a smart search algorithm to perform hyperparemeter tuning rather then brute force
-- Differnt models could be explored to see if there is a better suited machine learning model for this specific classification
+- The ML model can be trained on an expanded search space for the parameter, something like raytune could be used to use a smart search algorithm to perform hyperparameter tuning rather than brute force
+- Different models could be explored to see if there is a better-suited machine learning model for this specific classification
 
 ---
 
 ### Additional Notes:
 
-- Results of the model is attached in [Results.txt](https://github.com/harshp30/SVMIndicatorsTradingStrategyImplementation/blob/main/Results.txt)
+- Results of the model are attached in [Results.txt](https://github.com/harshp30/SVMIndicatorsTradingStrategyImplementation/blob/main/results.txt)
 - Data is provided by [Holczer Balazs](https://www.udemy.com/course/quantitative-finance-algorithmic-trading-ii-time-series/) 
+- The code blocks above are not complete, to view the full code go to the src files
